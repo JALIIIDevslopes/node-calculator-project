@@ -1,66 +1,63 @@
 var rs = require("readline-sync");
+const operators={
+  '+':(fN, sN) => fN+sN,
+ '-':(fN, sN) => fN-sN,
+ '*':(fN, sN) => fN*sN,
+ '/':(fN, sN) => fN/sN,
+ '%':(fN, sN) => fN%sN
+};
 
+// Setting variables to invalid
 let operator = "@";
-let firstNum = "w";
-let secondNum = "w";
-let firstPrompt = "w";
-let secondPrompt = "w";
+let firstNum = NaN;
+let secondNum = NaN;
+let firstPrompt = "";
+let secondPrompt = "";
 
-function doMath(op, fN, sN) {
-  let result = 0;
-  switch (op) {
-    case "/":
-      result = fN / sN;
-      break;
-    case "+":
-      result = fN + sN;
-      break;
-    case "-":
-      result = fN - sN;
-      break;
-    case "*":
-      result = fN * sN;
-      break;
-    default:
-      result = " a broken calculator";
-  }
 
-  return result;
-}
 
-while (
-  operator != "/" &&
-  operator != "*" &&
-  operator != "+" &&
-  operator != "-"
-) {
+while (!operators.hasOwnProperty(operator))
+  {
   operator = rs.question("What operation would you like to perform? ");
 
-  if (
-    operator != "/" &&
-    operator != "*" &&
-    operator != "+" &&
-    operator != "-"
-  ) {
+  if (!operators.hasOwnProperty(operator))
+   {
     console.log("That is not a valid operation");
   }
-}
 
-while (!Number.isInteger(firstNum)) {
+  }
+
+let whatOp=operators[operator];
+
+let k=typeof firstNum;
+let l=typeof secondNum;
+
+  
+
+while ((k != "number" && firstPrompt.trim().length==0) || Number.isNaN(firstNum)) {
   firstPrompt = rs.question("Please enter the first number: ");
-  firstNum = firstPrompt * 1;
-  if (!Number.isInteger(firstNum)) {
+  firstNum = Number(firstPrompt); 
+  
+  k=typeof firstNum;
+
+  if (k != "number" || firstPrompt.trim().length==0 ||Number.isNaN(firstNum)) {
     console.log("This is not a number");
+    k="";
+    firstPrompt="";
+    firstNum=NaN;
   }
 }
 
-while (!Number.isInteger(secondNum)) {
+
+
+while ((l != "number" && secondPrompt.trim().length==0) || Number.isNaN(secondNum)) {
   secondPrompt = rs.question("Please enter second number: ");
-  secondNum = secondPrompt * 1;
+  secondNum = Number(secondPrompt);
+  l=typeof secondNum
 
-  if (!Number.isInteger(secondNum)) {
+  if (l != "number" || secondPrompt.trim().length==0 ||Number.isNaN(secondNum)) {
     console.log("This is not a number");
   }
 }
 
-console.log("The result is " + doMath(operator, firstNum, secondNum));
+console.log("The result is " + whatOp(firstNum, secondNum));
